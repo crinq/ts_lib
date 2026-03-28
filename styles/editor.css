@@ -1,0 +1,178 @@
+/* ============================================================
+   Text Editor
+   ============================================================ */
+
+.text-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ce-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ce-toolbar-spacer { flex: 1; }
+
+.ce-solver-status {
+  padding: 2px 8px;
+  font-size: 11px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+.ce-solver-status:empty { display: none; }
+
+.ce-editor-wrapper {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Line numbers */
+.ce-line-numbers {
+  width: 36px;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  padding: 8px 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.ce-line-num {
+  height: 18px;
+  line-height: 18px;
+  padding: 0 6px;
+  text-align: right;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Code area (stacked highlight + textarea) */
+.ce-code-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--panel-bg);
+}
+
+.ce-highlight,
+.ce-textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  padding-bottom: 50%;
+  margin: 0;
+  border: none;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 12px;
+  line-height: 18px;
+  white-space: pre;
+  overflow: auto;
+  tab-size: 2;
+  word-wrap: normal;
+  background: transparent;
+}
+
+.ce-highlight {
+  pointer-events: none;
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.ce-textarea {
+  color: transparent;
+  caret-color: var(--text-primary);
+  resize: none;
+  outline: none;
+}
+
+.ce-textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+.ce-textarea:placeholder-shown {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+/* Syntax highlighting colors */
+.ce-keyword { color: #7c3aed; font-weight: 600; }
+[data-theme="dark"] .ce-keyword { color: #a78bfa; }
+
+.ce-string { color: #059669; }
+[data-theme="dark"] .ce-string { color: #34d399; }
+
+.ce-comment { color: #9ca3af; font-style: italic; }
+
+.ce-number { color: #d97706; }
+[data-theme="dark"] .ce-number { color: #fbbf24; }
+
+.ce-builtin { color: #2563eb; }
+[data-theme="dark"] .ce-builtin { color: #60a5fa; }
+
+.ce-operator { color: #dc2626; }
+[data-theme="dark"] .ce-operator { color: #f87171; }
+
+/* Error line highlight */
+.ce-error-line {
+  background: rgba(220, 38, 38, 0.1);
+  display: inline;
+  border-bottom: 1px wavy #dc2626;
+}
+
+[data-theme="dark"] .ce-error-line {
+  background: rgba(248, 113, 113, 0.1);
+  border-bottom-color: #f87171;
+}
+
+/* Error panel */
+.ce-error-panel {
+  max-height: 100px;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 4px 8px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.ce-error-item {
+  padding: 2px 0;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.ce-error-loc {
+  color: var(--error);
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ce-error-msg { color: var(--text-primary); }
+.ce-suggestion { color: var(--accent); font-style: italic; }
+
+.ce-error-more {
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 2px 0;
+}

@@ -1,0 +1,256 @@
+/* ============================================================
+   App Layout
+   ============================================================ */
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--panel-header-bg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  min-height: 36px;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-footer {
+  padding: 4px 12px;
+  background: var(--panel-header-bg);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  font-size: 12px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================
+   Splitters
+   ============================================================ */
+
+.splitter-h {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.splitter-v {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.splitter-pane {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.splitter-handle-h {
+  width: 5px;
+  cursor: col-resize;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.splitter-handle-v {
+  height: 5px;
+  cursor: row-resize;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.splitter-handle-h:hover,
+.splitter-handle-v:hover {
+  background: var(--accent);
+}
+
+body.splitter-dragging {
+  user-select: none;
+}
+
+/* ============================================================
+   Switcher (tabbed layout)
+   ============================================================ */
+
+.switcher {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.switcher-v { flex-direction: column; }
+.switcher-h { flex-direction: row; }
+
+.switcher-tabs {
+  display: flex;
+  flex-shrink: 0;
+  background: var(--panel-header-bg);
+  gap: 0;
+}
+
+.switcher-tabs-v {
+  flex-direction: row;
+  border-bottom: 1px solid var(--border);
+}
+
+.switcher-tabs-h {
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+}
+
+.switcher-tab {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.switcher-tabs-v .switcher-tab {
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.switcher-tabs-h .switcher-tab {
+  border-right: 2px solid transparent;
+  margin-right: -1px;
+}
+
+.switcher-tab:hover { color: var(--accent); }
+
+.switcher-tab-active {
+  color: var(--accent);
+  background: var(--bg-primary);
+}
+
+.switcher-tabs-v .switcher-tab-active { border-bottom-color: var(--accent); }
+.switcher-tabs-h .switcher-tab-active { border-right-color: var(--accent); }
+
+.switcher-content {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.switcher-pane {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   Panel
+   ============================================================ */
+
+.panel-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 4px 8px;
+  background: var(--panel-header-bg);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.panel-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: var(--panel-bg);
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+
+.btn {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.btn:hover { background: var(--bg-tertiary); }
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.btn-primary:hover { background: var(--accent-hover); }
+
+.btn-small {
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
+/* ============================================================
+   Modal Overlay
+   ============================================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-dialog {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: 420px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
