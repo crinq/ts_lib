@@ -60,7 +60,16 @@ export function createModal(opts: {
   overlay.className = overlayClass;
   if (opts.zIndex) overlay.style.zIndex = opts.zIndex;
 
-  const close = () => overlay.remove();
+  const close = () => {
+    overlay.remove();
+    document.removeEventListener('keydown', onKey);
+  };
+
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') close();
+  };
+  document.addEventListener('keydown', onKey);
+
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) close();
   });
@@ -77,4 +86,113 @@ export function createModal(opts: {
   document.body.appendChild(overlay);
 
   return { overlay, modal, close };
+}
+
+/**
+ * Open a modal dialog with a title bar, close button, and body area.
+ *
+ * This is a higher-level wrapper around `createModal` that adds a header
+ * with title text and a close button. The `buildBody` callback receives
+ * the body element and a `close` function.
+ *
+ * @param title Text shown in the modal header.
+ * @param buildBody Callback to populate the modal body.
+ * @param opts Optional overrides for overlay/modal classes and styles.
+ */
+export function openModal(
+  title: string,
+  buildBody: (body: HTMLElement, close: () => void) => void,
+  opts?: {
+    overlayClass?: string;
+    modalClass?: string;
+    modalStyle?: Partial<CSSStyleDeclaration>;
+  },
+): void {
+  const result = createModal({
+    overlayClass: opts?.overlayClass,
+    modalClass: opts?.modalClass ?? 'modal',
+    modalStyle: opts?.modalStyle,
+  });
+  if (!result) return;
+  const { modal, close } = result;
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'modal-header';
+  const titleEl = document.createElement('span');
+  titleEl.style.fontWeight = '600';
+  titleEl.textContent = title;
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'btn btn-small';
+  closeBtn.textContent = '\u00d7';
+  closeBtn.addEventListener('click', close);
+  header.appendChild(titleEl);
+  header.appendChild(closeBtn);
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'modal-body';
+
+  modal.appendChild(header);
+  modal.appendChild(body);
+
+  buildBody(body, close);
+}
+
+// ---- Form helpers ----
+
+/** Create a labeled input row (label on left, input on right). */
+export function formRow(label: string, input: HTMLElement): HTMLElement {
+  const row = document.createElement('div');
+  row.style.display = 'flex';
+  row.style.justifyContent = 'space-between';
+  row.style.alignItems = 'center';
+  row.style.marginBottom = '4px';
+  const lbl = document.createElement('label');
+  lbl.style.fontSize = '12px';
+  lbl.textContent = label;
+  row.appendChild(lbl);
+  row.appendChild(input);
+  return row;
+}
+
+/** Create a text input element. */
+export function textInput(value: string, onChange: (v: string) => void): HTMLInputElement {
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'settings-input';
+  input.style.width = '180px';
+  input.value = value;
+  input.addEventListener('change', () => onChange(input.value));
+  return input;
+}
+
+/** Create a number input element. */
+export function numberInput(value: number, onChange: (v: number) => void, step?: string): HTMLInputElement {
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.className = 'settings-input';
+  input.value = String(value);
+  if (step) input.step = step;
+  input.addEventListener('change', () => {
+    const v = parseFloat(input.value);
+    if (!isNaN(v)) onChange(v);
+  });
+  return input;
+}
+
+/** Create a select dropdown. */
+export function selectInput(options: { value: string; label: string }[], current: string, onChange: (v: string) => void): HTMLSelectElement {
+  const sel = document.createElement('select');
+  sel.className = 'settings-input';
+  sel.style.width = '180px';
+  for (const opt of options) {
+    const o = document.createElement('option');
+    o.value = opt.value;
+    o.textContent = opt.label;
+    if (opt.value === current) o.selected = true;
+    sel.appendChild(o);
+  }
+  sel.addEventListener('change', () => onChange(sel.value));
+  return sel;
 }

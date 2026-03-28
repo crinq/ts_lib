@@ -17,4 +17,12 @@ export { initTheme, getThemeMode, getResolvedTheme, setThemeMode, cycleThemeMode
 export type { ThemeMode } from './theme';
 
 // Utilities
-export { escapeHtml, escapeRegex, createModal } from './utils';
+export { escapeHtml, escapeRegex, createModal, openModal, formRow, textInput, numberInput, selectInput } from './utils';
+
+// Toast
+export { showToast } from './toast';
+export type { ToastType } from './toast';
+
+// Context Menu
+export { showContextMenu } from './context-menu';
+export type { ContextMenuItem } from './context-menu';
