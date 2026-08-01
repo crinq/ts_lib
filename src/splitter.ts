@@ -93,6 +93,7 @@ class SplitterImpl implements Splitter {
       const panelHeader = document.createElement('div');
       panelHeader.className = 'panel-header';
       panelHeader.textContent = child.title;
+      if (child.headerTooltip) panelHeader.title = child.headerTooltip;
 
       const panelContent = document.createElement('div');
       panelContent.className = 'panel-content';
@@ -228,6 +229,7 @@ class SwitcherImpl implements Switcher {
     const tab = document.createElement('div');
     tab.className = 'switcher-tab';
     tab.textContent = name;
+    if (isPanel(child) && child.headerTooltip) tab.title = child.headerTooltip;
     tab.addEventListener('click', () => this.activate(index));
     this.tabBar.appendChild(tab);
     this.tabs.push(tab);

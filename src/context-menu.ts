@@ -2,9 +2,12 @@
 
 export interface ContextMenuItem {
   label: string;
-  action: () => void;
+  /** Invoked on click. Omit for items that only open a submenu. */
+  action?: () => void;
   disabled?: boolean;
   separator?: boolean;
+  /** Nested items — rendered as a submenu that opens on hover. */
+  children?: ContextMenuItem[];
 }
 
 let activeMenu: HTMLElement | null = null;
@@ -23,9 +26,8 @@ function onDocClick() { closeActive(); }
 function onDocKey(e: KeyboardEvent) { if (e.key === 'Escape') closeActive(); }
 function onDocContext() { closeActive(); }
 
-export function showContextMenu(x: number, y: number, items: ContextMenuItem[]): void {
-  closeActive();
-
+/** Build a `.context-menu` element (recursing into `children` as submenus). */
+function buildMenu(items: ContextMenuItem[]): HTMLElement {
   const menu = document.createElement('div');
   menu.className = 'context-menu';
 
@@ -42,15 +44,32 @@ export function showContextMenu(x: number, y: number, items: ContextMenuItem[]):
     if (item.disabled) row.classList.add('context-menu-disabled');
     row.textContent = item.label;
 
-    if (!item.disabled) {
+    const hasChildren = !item.disabled && !!item.children?.length;
+    if (hasChildren) {
+      row.classList.add('context-menu-has-submenu');
+      const arrow = document.createElement('span');
+      arrow.className = 'context-menu-arrow';
+      arrow.textContent = '▸'; // ▸
+      row.appendChild(arrow);
+      const submenu = buildMenu(item.children!);
+      submenu.classList.add('context-menu-submenu');
+      row.appendChild(submenu);
+    } else if (!item.disabled && item.action) {
       row.addEventListener('click', (e) => {
         e.stopPropagation();
         closeActive();
-        item.action();
+        item.action!();
       });
     }
     menu.appendChild(row);
   }
+  return menu;
+}
+
+export function showContextMenu(x: number, y: number, items: ContextMenuItem[]): void {
+  closeActive();
+
+  const menu = buildMenu(items);
 
   // Position: ensure menu stays in viewport
   menu.style.left = `${x}px`;

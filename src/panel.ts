@@ -46,6 +46,8 @@ export interface Panel {
   readonly id: string;
   /** Display title shown in the panel header bar. */
   readonly title: string;
+  /** Optional short description shown as a hover tooltip on the panel header / tab. */
+  readonly headerTooltip?: string;
 
   /**
    * Called once by the layout system. Render the panel's DOM into
