@@ -72,3 +72,9 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
 }
+
+/* Corner square where a horizontal and a vertical scrollbar meet — defaults
+   to the browser's white and glows in dark mode without this. */
+::-webkit-scrollbar-corner {
+  background: var(--bg-secondary);
+}
